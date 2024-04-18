@@ -1,0 +1,8 @@
+#Abre al jupyter
+jupyter notebook
+
+#Activa el ambiente de python
+source venv/bin/activate
+
+#Desactiva el ambiente de pyton
+deactivate
