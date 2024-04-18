@@ -1,0 +1,7 @@
+documental-isspol-8a9de3a29b00.json
+*.iml
+*.csv
+*.pkl
+venv/
+-ipynb_checkpoints/
+
