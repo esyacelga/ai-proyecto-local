@@ -4,4 +4,6 @@ documental-isspol-8a9de3a29b00.json
 *.pkl
 venv/
 -ipynb_checkpoints/
-
+dataset/finantials.csv.dvc
+dataset/movies.csv.dvc
+dataset/opening_gross.csv.dvc
