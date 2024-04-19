@@ -1,0 +1,29 @@
+#Abre al jupyter
+jupyter notebook
+
+#Activa el ambiente de python
+source venv/bin/activate
+
+#Desactiva el ambiente de pyton
+deactivate
+
+#Clave JSON
+export GOOGLE_APPLICATION_CREDENTIALS=$(/home/eyacelga/repositorio-codigo/documental-isspol-8a9de3a29b00.json)
+echo $GOOGLE_APPLICATION_CREDENTIALS
+
+
+dvc init
+dvc remote add dataset-track gs://model-data-base-tracker/dataset
+dvc remote add model-track gs://model-data-base-tracker/model
+
+# Para cargar al buket
+dvc add dataset/movies.csv --to-remote -r dataset-track
+dvc add model/model.pkl --to-remote -r model-track
+
+
+
+dvc stage add -n prepare -o dataset/fulldata.csv python src/prepare.py
+dvc stage add -n prepare -o dataset/fulldata.csv --force python src/prepare.py
+
+dvc stage add -n training -d dataset/fulldata.csv python src/train.py
+dvc stage add -n training -d dataset/fulldata.csv --force python src/train.py
