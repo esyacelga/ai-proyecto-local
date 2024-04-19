@@ -18,6 +18,9 @@ dvc remote add model-track gs://model-data-base-tracker/model
 
 # Para cargar al buket
 dvc add dataset/movies.csv --to-remote -r dataset-track
+dvc add dataset/finantials.csv --to-remote -r dataset-track
+dvc add dataset/opening_gross.csv --to-remote -r dataset-track
+
 dvc add model/model.pkl --to-remote -r model-track
 
 
