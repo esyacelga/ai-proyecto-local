@@ -1,14 +1,29 @@
-#Abre al jupyter
-jupyter notebook
+#Instalacion de ambiente virtual
+pip3 install virtualenv
 
-#Activa el ambiente de python
+#Crea ambiente virtual
+virtualenv venv
+
+#Selecciona ambiente virtual
 source venv/bin/activate
 
 #Desactiva el ambiente de pyton
 deactivate
 
+
+#Instalacion de dependencias
+pip install -r requirements.txt
+
+#Abre al jupyter
+jupyter notebook
+
+
+
+
 #Clave JSON
 export GOOGLE_APPLICATION_CREDENTIALS=$(/home/eyacelga/repositorio-codigo/documental-isspol-8a9de3a29b00.json)
+export GOOGLE_APPLICATION_CREDENTIALS="/home/eyacelga/repositorio-codigo/documental-isspol-8a9de3a29b00.json"
+
 echo $GOOGLE_APPLICATION_CREDENTIALS
 
 
@@ -18,4 +33,35 @@ dvc remote add model-track gs://model-data-base-tracker/model
 
 # Para cargar al buket
 dvc add dataset/movies.csv --to-remote -r dataset-track
+dvc add dataset/finantials.csv --to-remote -r dataset-track
+dvc add dataset/opening_gross.csv --to-remote -r dataset-track
+
 dvc add model/model.pkl --to-remote -r model-track
+
+
+
+#dvc stage add -n prepare -o dataset/fulldata.csv python src/prepare.py
+#dvc stage add -n prepare -o dataset/fulldata.csv --force python src/prepare.py
+
+
+dvc stage add -n prepare -d src/prepare.py -o dataset/full_data.csv python src/prepare.py
+dvc stage add -n training -d dataset/fulldata.csv -o model/model.pkl python src/train.py
+
+#############
+#Aquí hay una explicación de cada parte del comando:
+
+#-n prepare: Esto establece un nombre para el paso de preparación, que en este caso es "prepare".
+#-d src/prepare.py: Esto especifica la dependencia del paso de preparación, es decir, el archivo de Python prepare.py ubicado en el directorio src.
+#-o dataset/fulldata.csv: Esto especifica el archivo de salida del paso de preparación, es decir, el archivo fulldata.csv que se generará como resultado del paso de preparación y se ubicará en el directorio dataset.
+#python src/prepare.py: Esto es el comando que se ejecutará como parte del paso de preparación. En este caso, ejecutará el script Python prepare.py ubicado en el directorio src.
+
+
+#Ejecutar el paso de preparación
+dvc repro prepare
+dvc repro training
+dvc repro
+dvc repro -f
+dvc dag
+
+
+
