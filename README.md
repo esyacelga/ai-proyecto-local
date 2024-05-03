@@ -4,7 +4,7 @@ Esta es la documentación técnica del proyecto de Machine Learning, donde se de
 
 ## Descripción del Proyecto
 
-El objetivo principal de este proyecto es integrar varios proyectos pequeños de Machine Learning en uno solo y documentar detalladamente cada paso, desde la adquisición de datos hasta la implementación de modelos. 
+El objetivo principal de este proyecto es integrar varios proyectos pequeños de Machine Learning en uno solo y documentar detalladamente cada paso, desde la adquisición de datos hasta la implementación de modelos.
 
 ## Estructura del Repositorio
 
@@ -17,9 +17,9 @@ El repositorio está estructurado de la siguiente manera:
 - `README.md`: Este archivo, que proporciona una visión general del proyecto.
 
 ### Comando para exportaciond de dependencias
+
 pip freeze
 
 ## Instalación
 
 Para instalar las dependencias del proyecto, puedes ejecutar el siguiente comando:
-
