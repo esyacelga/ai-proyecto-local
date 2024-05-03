@@ -66,4 +66,4 @@ dvc dag
 
 #comando para compilar
 DOCKER_BUILDKIT=1 docker build . -t model-api:v1
-docker run -p 8000:8000 model-api:vi
+FGAS
