@@ -16,4 +16,4 @@ def salary_prediction_model_prediction(request: salary_model.SalaryPredictionReq
 
 @app.post('/v1/profitPrediction')
 def profit_prediction_model_prediction(request: profit_classes.ProfitRequest):
-    return profit_classes.ProfitResponse(Salary=get_prediction(request,'regresion_lineal_multiple/src/notebooks/model/model-profit.pkl'))
+    return profit_classes.ProfitResponse(Profit=get_prediction(request,'regresion_lineal_multiple/src/notebooks/model/model-profit.pkl'))
