@@ -21,16 +21,22 @@ El repositorio está estructurado de la siguiente manera:
 - `README.md`: Este archivo, que proporciona una visión general del proyecto.
 - `requeriments.txt`: Dependencias del proyecto individual
 
-### Comando para exportación de dependencias
-
-pip freeze
-
 ## Instalación
 
 Para instalar las dependencias del proyecto, puedes ejecutar el siguiente comando:
 
-`pip3 install -r proyecto-a-ejecuatar/requeriments.txt`
+`pip3 install -r proyecto-a-ejecuatar/requeriments.txt`: Instalación  de dependencias
+
+`uvicorn api.main:app`: Corre la aplicación Fast API
+
+Ejecucion:
+
+`pytest api/tests.py`
+
+`uvicorn api.main:app`: Corre la aplicación Fast API
 
 ## Comandos para la ejecución en Docker
 
 `sudo docker run -d -p 8000:8000 model-api:v1`: Corre el contenedor
+
+`sudo DOCKER_BUILDKIT=1 docker build . -t model-api:v1`: Construcción de docker
