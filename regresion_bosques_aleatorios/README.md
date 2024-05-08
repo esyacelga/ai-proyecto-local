@@ -12,6 +12,7 @@ El proceso de construcción de un árbol de decisión implica dividir repetidame
 
 Los árboles de decisión son interpretables y fáciles de entender, ya que reflejan un conjunto de reglas de decisión intuitivas. Sin embargo, pueden ser propensos a sobreajustarse a los datos de entrenamiento si no se controlan correctamente. Para mitigar esto, se pueden usar técnicas como la poda del árbol, la limitación de la profundidad del árbol o el uso de métodos ensemble como Random Forest o Gradient Boosting.
 
+
 Supongamos que tenemos un conjunto de datos con dos características: "Edad" y "Ingresos", y queremos predecir si una persona comprará un producto (1) o no (0).
 
 Primero, tenemos el siguiente conjunto de datos:
@@ -24,6 +25,7 @@ Primero, tenemos el siguiente conjunto de datos:
 | 30   | 40000    | 1      |
 | 35   | 60000    | 1      |
 | 40   | 80000    | 1      |
+
 
 Ahora, vamos a construir un árbol de decisión paso a paso:
 
@@ -52,17 +54,14 @@ Ahora, vamos a construir un árbol de decisión paso a paso:
 
 Este sería un árbol de decisión simple para este conjunto de datos. La construcción del árbol implica seleccionar la característica y el punto de división que mejor separa las clases en cada paso. Una vez construido, podemos usar este árbol para predecir si una nueva persona comprará o no un producto, siguiendo las preguntas en los nodos del árbol.
 
+
 ### Descripción del Ejemplo
 
-El conjunto de datos describe el nivel jerárquico de empleados en una empresa, junto con sus salarios asociados. Aquí está la descripción de cada columna:
+El archivo CSV Ice Cream Selling es un conjunto de datos que suelen utilizar los principiantes en el aprendizaje automático, especialmente para practicar la regresión polinómica. Es un conjunto de datos sencillo y adecuado para personas que están comenzando su viaje en el aprendizaje automático y desean adquirir experiencia práctica con algoritmos de regresión.
 
-- **Position**: El título o posición del empleado en la empresa.
-- **Level**: El nivel jerárquico del empleado, donde 1 es el nivel más bajo y 10 es el nivel más alto.
-- **Salary**: El salario asociado con la posición del empleado.
+El conjunto de datos está organizado en formato tabular y contiene dos columnas. La primera columna representa los valores de temperatura, que sirven como variable independiente en el análisis de regresión. Los valores de temperatura normalmente se miden en grados Celsius o Fahrenheit. La segunda columna corresponde al número de unidades de helado vendidas, que es la variable dependiente en el análisis de regresión.
 
-Por ejemplo, la primera fila indica que un "Business Analyst" tiene un nivel de 1 y un salario de 45000. La última fila indica que un "CEO" tiene un nivel de 10 y un salario de 1000000.
-
-Este conjunto de datos proporciona una relación entre el nivel jerárquico y el salario en la empresa, lo que puede ser útil para comprender la estructura salarial y la progresión en la carrera dentro de la empresa.
+Al utilizar este conjunto de datos, los principiantes pueden explorar la relación entre la temperatura y las ventas de helado y aplicar técnicas de regresión polinómica para predecir la cantidad de unidades de helado vendidas en función de la temperatura. Este conjunto de datos ofrece un ejemplo práctico y identificable para comprender e implementar algoritmos de regresión en el aprendizaje automático.
 
 ## Instalación de ambiente
 
