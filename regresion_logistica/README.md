@@ -1,14 +1,29 @@
-## Descripción del proyecto regresion lineal simple
+## Descripción del proyecto regresion logistica
 
-La regresión lineal simple es un método estadístico que modela la relación entre una variable independiente (predictora) y una variable dependiente (objetivo) mediante una línea recta. En esencia, busca encontrar la mejor línea recta que se ajuste a los datos observados, minimizando la suma de los cuadrados de las diferencias entre los valores reales y los valores predichos por la línea. Esto permite predecir valores de la variable dependiente basándose en los valores de la variable independiente, lo que facilita el análisis de tendencias y la toma de decisiones.
+La regresión logística es un modelo de aprendizaje supervisado utilizado para problemas de clasificación binaria, lo que significa que predice la probabilidad de que una muestra pertenezca a una de dos clases. Aunque se llama "regresión", se usa para clasificar, no para predecir valores continuos.
 
-La regresión lineal simple es útil cuando tienes una relación lineal aparente entre una variable independiente (predictora) y una variable dependiente (objetivo). Puedes usarla en una variedad de situaciones, como predecir el precio de una casa basándose en su tamaño, estimar las ventas de un producto en función de la cantidad gastada en publicidad, o prever el rendimiento estudiantil según el número de horas de estudio. Sin embargo, es importante tener en cuenta que la regresión lineal simple funciona mejor cuando la relación entre las variables es lineal y no hay demasiado ruido en los datos. En casos donde la relación no es lineal, o hay múltiples variables independientes involucradas, podría ser necesario utilizar métodos más avanzados, como la regresión lineal múltiple o técnicas de aprendizaje automático.
+En términos simples:
 
-![1714770637929](images/README/1714770637929.png)
+* Toma un conjunto de características (por ejemplo, edad, género, ingresos) y calcula la probabilidad de que una muestra pertenezca a una de dos clases.
+* Utiliza una función logística (también llamada sigmoide) para transformar la combinación lineal de las características en un valor entre 0 y 1, que representa la probabilidad de pertenecer a la clase positiva.
+* Si la probabilidad es superior a un umbral (por defecto 0.5), la muestra se clasifica como perteneciente a la clase positiva; de lo contrario, se clasifica como perteneciente a la clase negativa.
+
+En resumen, la regresión logística modela la relación entre las características de entrada y la probabilidad de pertenecer a una clase, y se utiliza para problemas de clasificación binaria. Es simple pero efectiva, y se utiliza ampliamente en aplicaciones donde se necesita predecir categorías.
+
+
+![1715129767422](images/README/1715129767422.png)
 
 ### Descripción del Ejemplo
 
-Predice el salario con respecto a los años de experiencia
+El conjunto de datos describe características de usuarios y si realizaron una compra o no. Aquí está la descripción de cada columna:
+
+* **User ID**: Identificación única de cada usuario.
+* **Gender**: Género del usuario (Masculino o Femenino).
+* **Age**: Edad del usuario.
+* **EstimatedSalary**: Salario estimado del usuario.
+* **Purchased**: Indicador binario que muestra si el usuario realizó una compra (1) o no (0).
+
+Por ejemplo, el primer usuario es un hombre de 19 años con un salario estimado de 19000, y no realizó una compra (Purchased=0). El segundo usuario es un hombre de 35 años con un salario estimado de 20000 y tampoco realizó una compra. Y así sucesivamente para cada fila en el conjunto de datos.
 
 ## Instación de ambiente
 
