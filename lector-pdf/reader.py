@@ -3,7 +3,7 @@ from google.cloud import storage
 from google.cloud import documentai_v1 as documentai
 
 # Configurar la ruta a tu archivo de clave JSON de Google Cloud
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/eyacelga/repositorio-codigo/ai-proyecto-local/lector-pdf/documental-isspol-f6c83c0f9d41.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/eyacelga/repositorio-codigo/ai-proyecto-local/lector-pdf/documental-isspol-664f93e7c2fb.json"
 
 # Configuración de parámetros
 project_id = 'documental-isspol'
@@ -12,6 +12,24 @@ processor_id = 'f0348ea454d52124'
 bucket_name = 'document-ai-reader'
 file_path = '/home/eyacelga/repositorio-codigo/ai-proyecto-local/lector-pdf/ISSPOL-TIC-2024-0033-I-ME.pdf'
 gcs_input_uri = f'gs://{bucket_name}/{os.path.basename(file_path)}'
+
+def leer_pdf_como_bytes(file_path):
+    """Lee un archivo PDF y lo convierte a bytes."""
+    with open(file_path, 'rb') as file:
+        contenido_en_bytes = file.read()
+    return contenido_en_bytes
+
+def cargar_documento_en_bytes(bucket_name, gcs_input_uri):
+    """Carga un documento desde GCS y lo devuelve en formato de bytes."""
+    # Inicializar el cliente de GCS
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(gcs_input_uri)
+    
+    # Descargar el contenido del archivo en bytes
+    contenido_bytes = blob.download_as_bytes()
+    return contenido_bytes
+
 
 def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
     """Sube un archivo al bucket de Google Cloud Storage."""
@@ -23,36 +41,31 @@ def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
 
     print(f'Archivo {source_file_name} subido a {destination_blob_name}.')
 
+
 def process_document(project_id, location, processor_id, gcs_input_uri):
-    """Procesa el documento usando Document AI."""
+    """
+    Processes a document stored in a Cloud Storage bucket using the specified Document AI processor.
+
+    Args:
+        project_id (str): The project ID of your GCP project.
+        location (str): The location of the Document AI processor (e.g., "us").
+        processor_id (str): The ID of the Document AI processor (e.g., "4234234234").
+        gcs_input_uri (str): The Cloud Storage URI of the document to process (e.g., "gs://your-bucket/your-document.pdf").
+
+    Returns:
+        documentai.types.Document: The processed document object.
+    """
     client = documentai.DocumentProcessorServiceClient()
+    gcs_document=documentai.GcsDocument(gcs_uri=gcs_input_uri, mime_type="application/pdf")
 
-    # La ruta del recurso del procesador
-    name = client.processor_path(project_id, location, processor_id)
+    # Configure the process request
+    request = documentai.ProcessRequest(name='CUSTOM', gcs_document=gcs_document)
 
-    # La fuente de contenido (en este caso, un archivo en Google Cloud Storage)
-    gcs_document = documentai.types.GcsDocument(gcs_uri=gcs_input_uri, mime_type='application/pdf')
-    input_config = documentai.types.BatchProcessRequest.BatchInputConfig(gcs_document=gcs_document)
+    result = client.process_document(request=request)
 
-    # Configurar la solicitud
-    request = documentai.types.BatchProcessRequest(
-        name=name,
-        input_configs=[input_config],
-        document_output_config=documentai.types.DocumentOutputConfig(gcs_output_config=documentai.types.DocumentOutputConfig.GcsOutputConfig(gcs_uri='gs://{bucket_name}/output/'))
-    )
+    document = result.document
 
-    # Procesar el documento
-    operation = client.batch_process_documents(request=request)
-
-    print('Esperando a que la operación se complete...')
-    operation.result()
-
-    # Descargar y leer el resultado
-    bucket = storage.Client().bucket(bucket_name)
-    blob = bucket.blob('output/processed_document.json')
-    result = blob.download_as_string()
-
-    return result
+    return document
 
 # Paso 1: Subir el archivo PDF a Google Cloud Storage
 upload_to_gcs(bucket_name, file_path, os.path.basename(file_path))
