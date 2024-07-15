@@ -3,9 +3,28 @@ import os
 from google.cloud import documentai_v1 as documentai
 from google.cloud import storage
 from google.cloud.exceptions import NotFound
+from elasticsearch import Elasticsearch
+
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './documentacion-isspol.json'
 
+
+def insertar_documento(es_host, indice, documento):
+    """
+    Inserta un documento en Elasticsearch sin especificar un ID para que Elasticsearch genere uno automáticamente.
+
+    :param es_host: Dirección del host de Elasticsearch (por ejemplo, "http://localhost:9200").
+    :param indice: Nombre del índice donde se insertará el documento.
+    :param documento: El documento en formato JSON que se insertará.
+    :return: Respuesta de Elasticsearch.
+    """
+    # Crear una instancia del cliente de Elasticsearch
+    es = Elasticsearch([es_host])
+
+    # Insertar el documento sin especificar el ID
+    respuesta = es.index(index=indice, document=documento)
+
+    return respuesta
 
 def guardar_entidades_en_json(document):
     entidades_json = {}
@@ -110,5 +129,20 @@ pocesador = '89b174137f081104'
 documento = onlineProcessing(project_id, ruta_archivo, pocesador)
 documento_json = documento.text
 print(documento_json)
+
+es_host = "http://192.168.2.232:9200"
+
+# Nombre del índice
+indice = "documento_word"
+
+# Documento en formato JSON
+documento = {
+    "titulo": "Elasticsearch y Python",
+    "contenido": documento_json,
+    "autor": "santiago.yacelga"
+}
+
+# Insertar el documento
+respuesta = insertar_documento(es_host, indice, documento)
 
 #subir_archivo(bucket, ruta_archivo)
