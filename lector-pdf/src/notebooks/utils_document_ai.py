@@ -2,6 +2,18 @@ import os
 
 from google.cloud import documentai_v1 as documentai
 
+# Configurar la ruta a tu archivo de clave JSON de Google Cloud
+os.environ[
+    "GOOGLE_APPLICATION_CREDENTIALS"] = "/home/eyacelga/repositorio-codigo/ai-proyecto-local/lector-pdf/src/data/documental-isspol-664f93e7c2fb.json"
+
+# Configuración de parámetros
+project_id = 'documental-isspol'
+location = 'us'  # o cualquier otra ubicación donde tengas configurada Document AI
+processor_id = 'f0348ea454d52124'
+bucket_name = 'document-ai-reader'
+# file_path = '/home/eyacelga/repositorio-codigo/ai-proyecto-local/lector-pdf/ISSPOL-TIC-2024-0033-I-ME.pdf'
+# gcs_input_uri = f'gs://{bucket_name}/{os.path.basename(file_path)}'
+mime_type = 'application/pdf'
 
 
 
