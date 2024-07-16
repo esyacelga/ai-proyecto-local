@@ -12,8 +12,12 @@ Predice el salario con respecto a los años de experiencia
 
 ## Instación de ambiente
 
+
 `virtualenv env` : Crecion de ambiente
+
 
 `source proyecto-a-ejecutar/venv/bin/activate`: Activación de ambiente
 
 `pip3 install -r proyecto-a-ejecutar/requeriments.txt`: Instalacion de dependencias
+
+`conda deactivate` : Desactivacion del ambiente virtual conda
