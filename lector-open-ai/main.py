@@ -14,8 +14,13 @@ async def processUploadPdf(file: UploadFile = File(...)):
     # pdf_bytes = await file.read()
     # texto = dai.onlineProcessingPdf(pdf_bytes)
     if file.filename.endswith(".pdf"):
+        # Crear el directorio 'uploads' si no existe
+        upload_dir = "uploads"
+        if not os.path.exists(upload_dir):
+            os.makedirs(upload_dir)
+
         # Guardar el archivo en el servidor
-        file_path = os.path.join("uploads", file.filename)
+        file_path = os.path.join(upload_dir, file.filename)
         with open(file_path, "wb") as f:
             f.write(file.file.read())
         return JSONResponse(content={"message": "Archivo PDF subido correctamente", "file_path": file_path})
