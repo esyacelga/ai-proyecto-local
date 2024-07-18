@@ -1,4 +1,4 @@
-import documen_ai as dai
+import document_ai as dai
 import elastic_search as elas
 import lector_utils as utll
 import open_ai as openai
