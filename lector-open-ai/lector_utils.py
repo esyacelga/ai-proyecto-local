@@ -8,7 +8,7 @@ def obtener_secret_key(ruta_archivo):
         return config.get('secret_key')
 
 def leer_pdf_como_bytes(file_path):
-    """Lee un archivo PDF y lo convierte a bytes."""
+    """Lee un archivo PDF y lo convierte a bytes...."""
     with open(file_path, 'rb') as file:
         contenido_en_bytes = file.read()
     return contenido_en_bytes
