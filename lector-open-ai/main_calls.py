@@ -1,9 +1,13 @@
-import lector_service as svr
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+from src import lector_service as svr
 
 
-def procesarDocumento():
-    texto_dividido = svr.uploadAndProcessDocument('eyacelga')
+def procesarDocumento(usario='eyacelga'):
+    texto_dividido = svr.uploadAndProcessDocument(usario)
     print(texto_dividido)
+
 
 def consultaDocumento():
     consulta = "Cual es la problematica del siisspolweb"

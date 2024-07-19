@@ -1,7 +1,5 @@
 import os
-
 from google.cloud import documentai_v1 as documentai
-
 import lector_utils as lectorUtil
 
 

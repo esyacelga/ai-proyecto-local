@@ -4,6 +4,7 @@ import lector_utils as utll
 import open_ai as openai
 
 
+
 def uploadAndProcessDocument(usuario):
     raw_text = cargarDocumento()
     cleaned_text = utll.normalize_text(raw_text)
@@ -27,7 +28,7 @@ def get_answer_from_documents(query):
 
 
 def get_test_open_ai_connection():
-    query= "quien es Rocio Yuquilema"
-    contexto='Rocio Yuquilema es sargento segundo de la policia nacional del ecuador, nacida en Riobamba y de padre y madre de la misma provincia'
+    query = "quien es Rocio Yuquilema"
+    contexto = 'Rocio Yuquilema es sargento segundo de la policia nacional del ecuador, nacida en Riobamba y de padre y madre de la misma provincia'
     respuesta = openai.procesarConsulta(query, contexto)
     return respuesta

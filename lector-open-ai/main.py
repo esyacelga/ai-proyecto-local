@@ -2,7 +2,7 @@ import os
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from starlette.responses import JSONResponse
-import lector_service as lect
+import main_calls as lect
 app = FastAPI()
 
 
@@ -24,10 +24,7 @@ async def processUploadPdf(file: UploadFile = File(...)):
         with open(file_path, "wb") as f:
             f.write(file.file.read())
 
-        lect.uploadAndProcessDocument('eyacelga')
+        lect.procesarDocumento('eyacelga')
         return JSONResponse(content={"message": "Archivo PDF subido correctamente", "file_path": file_path})
     else:
         raise HTTPException(status_code=400, detail="El archivo debe ser un PDF")
-
-    # Enviar una respuesta exitosa
-    return {"message": "File uploaded successfully", "content": '4545'}
