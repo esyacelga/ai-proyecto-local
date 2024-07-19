@@ -13,7 +13,7 @@ def uploadAndProcessDocument(usuario):
 
 
 def cargarDocumento():
-    ruta_archivo = './prueba-documento.pdf'
+    ruta_archivo = './uploads/documento.pdf'
     documento = dai.onlineProcessing(ruta_archivo)
     documento_pdf = documento.text
     return documento_pdf
