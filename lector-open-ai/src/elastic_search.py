@@ -13,7 +13,7 @@ def index_documents(docs, usuarioCreacion, index="documentacion_isspol", servido
                 "creacion_fecha": datetime.now().isoformat(),
                 "contenido_documento": doc
             }
-            es.index(index=index, id=i, body=body)
+            es.index(index=index, body=body)
         else:
             print(f"Documento duplicado no indexado: {doc[:30]}...")
 
