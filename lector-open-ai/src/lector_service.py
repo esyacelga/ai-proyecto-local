@@ -4,7 +4,6 @@ import lector_utils as utll
 import open_ai as openai
 
 
-
 def uploadAndProcessDocument(usuario):
     raw_text = cargarDocumento()
     cleaned_text = utll.normalize_text(raw_text)
@@ -13,8 +12,7 @@ def uploadAndProcessDocument(usuario):
     return chunks
 
 
-def cargarDocumento():
-    ruta_archivo = './uploads/documento.pdf'
+def cargarDocumento(ruta_archivo='./uploads/prueba-documento.pdf'):
     documento = dai.onlineProcessing(ruta_archivo)
     documento_pdf = documento.text
     return documento_pdf

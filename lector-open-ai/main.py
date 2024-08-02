@@ -23,7 +23,7 @@ async def processUploadPdf(file: UploadFile = File(...)):
         file_path = os.path.join(upload_dir, 'documento.pdf')
         with open(file_path, "wb") as f:
             f.write(file.file.read())
-
+        print(file_path)
         lect.procesarDocumento('eyacelga')
         return JSONResponse(content={"message": "Archivo PDF subido correctamente", "file_path": file_path})
     else:
