@@ -7,6 +7,7 @@
 
 `pip3 install -r proyecto-a-ejecutar/requeriments.txt`: Instalacion de dependencias
 
+`pip freeze > requeriments.txt`: Actualizacion de archivo
 
 ## Activacion del servicio
 `uvicorn main:app --host 0.0.0.0 --port 8000 --reload`: Comando
