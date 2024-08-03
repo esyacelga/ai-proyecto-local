@@ -1,5 +1,6 @@
 import os
 
+import PyPDF2
 from fastapi import APIRouter, Form
 from fastapi import File, UploadFile, HTTPException
 from starlette.responses import JSONResponse
@@ -20,7 +21,6 @@ def read_greet(name: str):
     message = get_message(name)
     return {"message": message}
 
-
 @router.post("/processUploadPdf")
 async def processUploadPdf(file: UploadFile = File(...),
                            creacion_usuario: str = Form(...),
@@ -40,9 +40,13 @@ async def processUploadPdf(file: UploadFile = File(...),
 
         # Guardar el archivo en el servidor
         file_path = os.path.join(upload_dir, 'documento.pdf')
-        with open(file_path, "wb") as f:
-            f.write(file.file.read())
-        print(file_path)
+        with open(file_path, "rb") as f:
+            reader = PyPDF2.PdfReader(f)
+            num_pages = len(reader.pages)
+            if num_pages > 15:
+                os.remove(file_path)  # Eliminar el archivo temporal
+                raise HTTPException(status_code=400, detail="El archivo PDF tiene más de 15 páginas")
+
         resultado, mensaje = lect.procesarDocumento('eyacelga', file_path)
         if resultado == True:
             return JSONResponse(status_code=200, content={"message": mensaje, "file_path": file_path})
