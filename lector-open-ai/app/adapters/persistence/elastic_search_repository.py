@@ -2,10 +2,11 @@
 from datetime import datetime
 
 from elasticsearch import Elasticsearch, exceptions
+
 from app.adapters.config.settings import ELASTIC_SEARCH_URL
 
 
-def index_documents(docs, usuarioCreacion, index="documentacion_isspol"):
+def index_documents(docs, usuarioCreacion, equipo, index="documentacion_isspol"):
     es = Elasticsearch([ELASTIC_SEARCH_URL])
     try:
         for doc in docs:
@@ -13,6 +14,7 @@ def index_documents(docs, usuarioCreacion, index="documentacion_isspol"):
                 body = {
                     "usuario_creacion": usuarioCreacion,
                     "creacion_fecha": datetime.now().isoformat(),
+                    "creacion_equipo": equipo,
                     "contenido_documento": doc
                 }
                 es.index(index=index, body=body)

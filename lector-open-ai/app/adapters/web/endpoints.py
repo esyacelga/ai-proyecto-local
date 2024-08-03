@@ -21,12 +21,11 @@ def read_greet(name: str):
     message = get_message(name)
     return {"message": message}
 
+
 @router.post("/processUploadPdf")
 async def processUploadPdf(file: UploadFile = File(...),
                            creacion_usuario: str = Form(...),
                            creacion_equipo: str = Form(...)):
-    print(creacion_usuario)
-    print(creacion_equipo)
     # Validar el archivo PDF
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="Invalid file type")
@@ -47,7 +46,7 @@ async def processUploadPdf(file: UploadFile = File(...),
                 os.remove(file_path)  # Eliminar el archivo temporal
                 raise HTTPException(status_code=400, detail="El archivo PDF tiene más de 15 páginas")
 
-        resultado, mensaje = lect.procesarDocumento('eyacelga', file_path)
+        resultado, mensaje = lect.procesarDocumento(creacion_usuario, creacion_equipo, file_path)
         if resultado == True:
             return JSONResponse(status_code=200, content={"message": mensaje, "file_path": file_path})
         else:

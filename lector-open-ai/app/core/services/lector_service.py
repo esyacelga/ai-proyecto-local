@@ -4,19 +4,19 @@ import app.adapters.persistence.elastic_search_repository as elas
 import app.utils.lector_utils as utll
 
 
-def procesarDocumento(usario='eyacelga', rutaDirectorio=''):
-    result, texto = uploadAndProcessDocument(usario, rutaDirectorio)
+def procesarDocumento(usario='eyacelga', equipo='localhost', rutaDirectorio=''):
+    result, texto = uploadAndProcessDocument(usario, equipo, rutaDirectorio)
     print(result, texto)
     return result, texto
 
 
-def uploadAndProcessDocument(usuario, rutaDirectorio):
+def uploadAndProcessDocument(usuario, equipo, rutaDirectorio):
     result, raw_texto = cargarDocumento(rutaDirectorio)
     if result == False:
         return False, raw_texto
     cleaned_text = utll.normalize_text(raw_texto)
     chunks = utll.segment_by_length(cleaned_text, max_tokens=10000)
-    result, message = elas.index_documents(chunks, usuario)
+    result, message = elas.index_documents(chunks, usuario, equipo)
     if result == False:
         return False, message
     else:
