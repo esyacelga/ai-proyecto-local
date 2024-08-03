@@ -20,7 +20,7 @@ def index_documents(docs, usuarioCreacion, equipo, index="documentacion_isspol")
                 es.index(index=index, body=body)
                 return True, "Documento subido correctamente"
             else:
-                return False, "Documento duplicado"
+                return False, "Documento duplicado index_documents"
     except Exception as e:
         error_message = str(e)
         print(f"Error indexando documentos: {error_message}")
@@ -28,6 +28,7 @@ def index_documents(docs, usuarioCreacion, equipo, index="documentacion_isspol")
 
 
 def search_documents(query, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200"):
+    print("incia el metodo search_documents")
     es = Elasticsearch([servidor_elastic])
     response = es.search(
         index=index,
@@ -44,19 +45,21 @@ def search_documents(query, index="documentacion_isspol", servidor_elastic="http
 
 
 def document_exists(content, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200"):
+    print("Incia el metodo document_exists buscando: ",content )
     try:
-        print(index, servidor_elastic)
         es = Elasticsearch([servidor_elastic])
         response = es.search(
             index=index,
             body={
                 "query": {
-                    "match": {
+                    "term": {
                         "contenido_documento": content
                     }
                 }
             }
         )
+        print("*************************************************************************************")
+        print("Este es el resultado", response["hits"]["hits"])
         return len(response["hits"]["hits"]) > 0
     except exceptions.NotFoundError as e:
         print(f"No se ha encontrado el documento, ya que el indice no esta creado....: {e}")

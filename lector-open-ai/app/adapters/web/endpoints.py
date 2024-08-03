@@ -39,14 +39,22 @@ async def processUploadPdf(file: UploadFile = File(...),
 
         # Guardar el archivo en el servidor
         file_path = os.path.join(upload_dir, 'documento.pdf')
+        with open(file_path, "wb") as f:
+            f.write(file.file.read())
+
+        # Validar el número de páginas del PDF
         with open(file_path, "rb") as f:
             reader = PyPDF2.PdfReader(f)
             num_pages = len(reader.pages)
-            if num_pages > 15:
+            if num_pages > 16:
                 os.remove(file_path)  # Eliminar el archivo temporal
-                raise HTTPException(status_code=400, detail="El archivo PDF tiene más de 15 páginas")
+                raise HTTPException(status_code=400, detail="El archivo PDF tiene más de 16 páginas")
+
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=400, detail="El archivo no se ha cargado en el servidor")
 
         resultado, mensaje = lect.procesarDocumento(creacion_usuario, creacion_equipo, file_path)
+        os.remove(file_path)  # Eliminar el archivo temporal
         if resultado == True:
             return JSONResponse(status_code=200, content={"message": mensaje, "file_path": file_path})
         else:
