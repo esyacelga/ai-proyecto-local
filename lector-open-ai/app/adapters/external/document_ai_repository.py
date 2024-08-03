@@ -4,8 +4,6 @@ from google.cloud import documentai_v1 as documentai
 
 import app.utils.lector_utils as lectorUtil
 
-import os
-from google.cloud import documentai_v1 as documentai
 
 def onlineProcessing(file_path, project_id='documentacion-isspol', processor_id='89b174137f081104'):
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './secret-key-document-ai.json'
