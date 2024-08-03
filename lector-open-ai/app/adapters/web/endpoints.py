@@ -1,9 +1,10 @@
 import os
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Form
 from fastapi import File, UploadFile, HTTPException
 from starlette.responses import JSONResponse
 
+import app.core.services.lector_service as lect
 from app.core.services.example_service import get_message
 
 router = APIRouter()
@@ -21,7 +22,11 @@ def read_greet(name: str):
 
 
 @router.post("/processUploadPdf")
-async def processUploadPdf(file: UploadFile = File(...)):
+async def processUploadPdf(file: UploadFile = File(...),
+                           creacion_usuario: str = Form(...),
+                           creacion_equipo: str = Form(...)):
+    print(creacion_usuario)
+    print(creacion_equipo)
     # Validar el archivo PDF
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="Invalid file type")
@@ -38,7 +43,11 @@ async def processUploadPdf(file: UploadFile = File(...)):
         with open(file_path, "wb") as f:
             f.write(file.file.read())
         print(file_path)
-        lect.procesarDocumento('eyacelga')
-        return JSONResponse(content={"message": "Archivo PDF subido correctamente", "file_path": file_path})
+        resultado, mensaje = lect.procesarDocumento('eyacelga', file_path)
+        if resultado == True:
+            return JSONResponse(status_code=200, content={"message": mensaje, "file_path": file_path})
+        else:
+            return JSONResponse(status_code=200,
+                                content={"message": "Advertencia:", "file_path": file_path, "detalle": mensaje})
     else:
         raise HTTPException(status_code=400, detail="El archivo debe ser un PDF")

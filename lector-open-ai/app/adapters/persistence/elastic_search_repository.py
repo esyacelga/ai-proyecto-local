@@ -2,20 +2,27 @@
 from datetime import datetime
 
 from elasticsearch import Elasticsearch, exceptions
+from app.adapters.config.settings import ELASTIC_SEARCH_URL
 
 
-def index_documents(docs, usuarioCreacion, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200"):
-    es = Elasticsearch([servidor_elastic])
-    for i, doc in enumerate(docs):
-        if not document_exists(doc, index):
-            body = {
-                "usuario_creacion": usuarioCreacion,
-                "creacion_fecha": datetime.now().isoformat(),
-                "contenido_documento": doc
-            }
-            es.index(index=index, body=body)
-        else:
-            print(f"Documento duplicado no indexado: {doc[:30]}...")
+def index_documents(docs, usuarioCreacion, index="documentacion_isspol"):
+    es = Elasticsearch([ELASTIC_SEARCH_URL])
+    try:
+        for doc in docs:
+            if not document_exists(doc, index, ELASTIC_SEARCH_URL):
+                body = {
+                    "usuario_creacion": usuarioCreacion,
+                    "creacion_fecha": datetime.now().isoformat(),
+                    "contenido_documento": doc
+                }
+                es.index(index=index, body=body)
+                return True, "Documento subido correctamente"
+            else:
+                return False, "Documento duplicado"
+    except Exception as e:
+        error_message = str(e)
+        print(f"Error indexando documentos: {error_message}")
+        return False, f"Error al indexar documentos: {error_message}"
 
 
 def search_documents(query, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200"):

@@ -1,21 +1,35 @@
 import app.adapters.external.document_ai_repository as dai
+import app.adapters.external.open_ai_repository as openai
 import app.adapters.persistence.elastic_search_repository as elas
 import app.utils.lector_utils as utll
-import app.adapters.external.open_ai_repository as openai
 
 
-def uploadAndProcessDocument(usuario):
-    raw_text = cargarDocumento()
-    cleaned_text = utll.normalize_text(raw_text)
+def procesarDocumento(usario='eyacelga', rutaDirectorio=''):
+    result, texto = uploadAndProcessDocument(usario, rutaDirectorio)
+    print(result, texto)
+    return result, texto
+
+
+def uploadAndProcessDocument(usuario, rutaDirectorio):
+    result, raw_texto = cargarDocumento(rutaDirectorio)
+    if result == False:
+        return False, raw_texto
+    cleaned_text = utll.normalize_text(raw_texto)
     chunks = utll.segment_by_length(cleaned_text, max_tokens=10000)
-    elas.index_documents(chunks, usuario)
-    return chunks
+    result, message = elas.index_documents(chunks, usuario)
+    if result == False:
+        return False, message
+    else:
+        return True, message
 
 
 def cargarDocumento(ruta_archivo='./uploads/prueba-documento.pdf'):
-    documento = dai.onlineProcessing(ruta_archivo)
-    documento_pdf = documento.text
-    return documento_pdf
+    result, documento = dai.onlineProcessing(ruta_archivo)
+    if result == False:
+        return False, documento
+    else:
+        text = documento.text
+    return True, text
 
 
 def get_answer_from_documents(query):
