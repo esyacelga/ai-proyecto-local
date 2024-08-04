@@ -6,7 +6,6 @@ import app.utils.lector_utils as utll
 
 def procesarDocumento(usario='eyacelga', equipo='localhost', rutaDirectorio=''):
     result, texto = uploadAndProcessDocument(usario, equipo, rutaDirectorio)
-    print(result, texto)
     return result, texto
 
 
