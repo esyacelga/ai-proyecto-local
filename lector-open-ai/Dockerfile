@@ -5,10 +5,10 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copia el archivo requirements.txt al directorio de trabajo
-COPY requirements.txt .
+COPY requeriments.txt .
 
 # Instala las dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requeriments.txt
 
 # Copia el resto del código fuente al directorio de trabajo
 COPY . .
