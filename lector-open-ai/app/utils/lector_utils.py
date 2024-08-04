@@ -34,8 +34,7 @@ def file_exists_in_directory(file_name, directory):
     return 1, os.path.isfile(file_path)
 
 
-def obtener_secret_key(secret_key_file):
-    directory = '../../'
+def obtener_secret_key(secret_key_file, directory='./'):
     file_path = directory + secret_key_file
     existe_archivo = file_exists_in_directory(secret_key_file, directory)
     if existe_archivo:

@@ -4,9 +4,9 @@ from app.adapters.config.settings import OPEN_AI_API_KEY_CONNECTION
 from app.utils import lector_utils as lect
 
 
-def procesarConsulta(query, contexto):
+def procesarConsulta(query, contexto, secret_key_directory='./'):
     consulta = generarConsulta(query, contexto)
-    response, texto = obtenerRespuesta(consulta)
+    response, texto = obtenerRespuesta(consulta, secret_key_directory)
     return response, texto
 
 
@@ -21,10 +21,10 @@ def generarConsulta(consulta, contenido):
     return messages
 
 
-def obtenerRespuesta(messages):
-    ruta_config = OPEN_AI_API_KEY_CONNECTION
+def obtenerRespuesta(messages, secret_key_directory='./'):
+    archive_name = OPEN_AI_API_KEY_CONNECTION
     texto_completo = ""
-    result, text = lect.obtener_secret_key(ruta_config)
+    result, text = lect.obtener_secret_key(archive_name, secret_key_directory)
     if result == False:
         return result, text
 

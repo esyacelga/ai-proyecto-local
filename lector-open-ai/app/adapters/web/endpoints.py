@@ -6,7 +6,6 @@ from fastapi import File, UploadFile, HTTPException
 from starlette.responses import JSONResponse
 
 import app.core.services.lector_service as lect
-from app.core.services.example_service import get_message
 
 router = APIRouter()
 
@@ -16,10 +15,22 @@ def read_hello():
     return {"message": "Hello, World!"}
 
 
-@router.get("/greet/{name}")
-def read_greet(name: str):
-    message = get_message(name)
-    return {"message": message}
+@router.get("/get_first_answer/{query}")
+def get_first_answer(query: str):
+    response, message = lect.get_first_answer_from_documents(query)
+    return {
+        "response": response,
+        "message": message
+    }
+
+
+@router.get("/get_answers_by_text/{context}/{query}")
+def get_answers_by_text(context: str, query: str):
+    response, message = lect.get_answer_from_context_and_query(context, query)
+    return {
+        "response": response,
+        "message": message
+    }
 
 
 @router.post("/processUploadPdf")
@@ -56,9 +67,8 @@ async def processUploadPdf(file: UploadFile = File(...),
         resultado, mensaje = lect.procesarDocumento(creacion_usuario, creacion_equipo, file_path)
         os.remove(file_path)  # Eliminar el archivo temporal
         if resultado == True:
-            return JSONResponse(status_code=200, content={"message": mensaje, "file_path": file_path})
+            return JSONResponse(status_code=200, content={"response": resultado, "message": mensaje})
         else:
-            return JSONResponse(status_code=200,
-                                content={"message": "Advertencia:", "file_path": file_path, "detalle": mensaje})
+            return JSONResponse(status_code=200, content={"response": resultado, "message": mensaje})
     else:
         raise HTTPException(status_code=400, detail="El archivo debe ser un PDF")

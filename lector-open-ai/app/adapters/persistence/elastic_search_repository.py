@@ -4,6 +4,7 @@ from datetime import datetime
 from elasticsearch import Elasticsearch, exceptions
 
 from app.adapters.config.settings import ELASTIC_SEARCH_URL
+from app.utils.lector_utils import normalize_text
 
 
 def insert_documet(texto, usuarioCreacion, equipo, index="documentacion_isspol"):
@@ -26,7 +27,7 @@ def insert_documet(texto, usuarioCreacion, equipo, index="documentacion_isspol")
 def index_documents(lst_documentos, usuario_creacion, creacion_equipo, index="documentacion_isspol"):
     try:
         for doc in lst_documentos:
-            if not document_exists(doc, index, ELASTIC_SEARCH_URL):
+            if not document_exists(doc, index):
                 return insert_documet(doc, usuario_creacion, creacion_equipo, index)
             else:
                 print(False, "Elemento duplicado")
@@ -37,8 +38,8 @@ def index_documents(lst_documentos, usuario_creacion, creacion_equipo, index="do
         return False, f"Error al indexar documentos: {error_message}"
 
 
-def search_documents(query, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200"):
-    es = Elasticsearch([servidor_elastic])
+def search_documents(query, index="documentacion_isspol"):
+    es = Elasticsearch([ELASTIC_SEARCH_URL])
     response = es.search(
         index=index,
         body={
@@ -53,9 +54,9 @@ def search_documents(query, index="documentacion_isspol", servidor_elastic="http
     return [hit["_source"]["contenido_documento"] for hit in response["hits"]["hits"]]
 
 
-def document_exists(content, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200"):
+def document_exists(content, index="documentacion_isspol"):
     try:
-        es = Elasticsearch([servidor_elastic])
+        es = Elasticsearch([ELASTIC_SEARCH_URL])
         response = es.search(
             index=index,
             body={
@@ -71,10 +72,9 @@ def document_exists(content, index="documentacion_isspol", servidor_elastic="htt
         return False
 
 
-def document_exists_match(content, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200"):
-    print("Incia el metodo document_exists buscando: ", content, index, servidor_elastic)
+def document_exists_match(content, index="documentacion_isspol"):
     try:
-        es = Elasticsearch([servidor_elastic])
+        es = Elasticsearch([ELASTIC_SEARCH_URL])
         response = es.search(
             index=index,
             body={
@@ -91,16 +91,17 @@ def document_exists_match(content, index="documentacion_isspol", servidor_elasti
         print(f"No se ha encontrado el documento, ya que el indice no esta creado....: {e}")
         return False
 
-def search_documents_by_text(query_text, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200", size=10):
 
+def search_documents_by_text(query_text, index="documentacion_isspol", size=10):
+    cleaned_text = normalize_text(query_text)
     try:
-        es = Elasticsearch([servidor_elastic])
+        es = Elasticsearch([ELASTIC_SEARCH_URL])
         response = es.search(
             index=index,
             body={
                 "query": {
                     "match": {
-                        "contenido_documento": query_text
+                        "contenido_documento": cleaned_text
                     }
                 },
                 "size": size

@@ -31,11 +31,15 @@ def cargarDocumento(ruta_archivo='./uploads/prueba-documento.pdf'):
     return True, text
 
 
-def get_answer_from_documents(query):
-    fragments = elas.search_documents(query)
+def get_first_answer_from_documents(query, secret_key_directory='./'):
+    fragments = elas.search_documents_by_text(query)
     texto_simple = fragments[0]
-    respuesta = openai.procesarConsulta(query, texto_simple)
-    return respuesta
+    return openai.procesarConsulta(query, texto_simple, secret_key_directory)
+
+
+def get_answer_from_context_and_query(contexto, query):
+    cleaned_text = utll.normalize_text(query)
+    return openai.procesarConsulta(contexto, cleaned_text)
 
 
 def get_test_open_ai_connection():
