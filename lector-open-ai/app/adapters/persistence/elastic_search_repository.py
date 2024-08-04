@@ -90,3 +90,27 @@ def document_exists_match(content, index="documentacion_isspol", servidor_elasti
     except exceptions.NotFoundError as e:
         print(f"No se ha encontrado el documento, ya que el indice no esta creado....: {e}")
         return False
+
+def search_documents_by_text(query_text, index="documentacion_isspol", servidor_elastic="http://192.168.2.232:9200", size=10):
+
+    try:
+        es = Elasticsearch([servidor_elastic])
+        response = es.search(
+            index=index,
+            body={
+                "query": {
+                    "match": {
+                        "contenido_documento": query_text
+                    }
+                },
+                "size": size
+            }
+        )
+        hits = response["hits"]["hits"]
+        return [hit["_source"] for hit in hits]
+    except exceptions.NotFoundError as e:
+        print(f"No se ha encontrado el documento, ya que el índice no está creado....: {e}")
+        return []
+    except Exception as e:
+        print(f"Error al buscar documentos: {str(e)}")
+        return []
