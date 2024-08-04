@@ -2,6 +2,7 @@ import unittest
 
 from elasticsearch import Elasticsearch
 
+from app.adapters.external.open_ai_repository import procesarConsulta
 from app.adapters.persistence.elastic_search_repository import \
     document_exists_match, search_documents_by_text  # Asegúrate de que la importación sea correcta
 
@@ -22,7 +23,7 @@ class TestDocumentExistsReal(unittest.TestCase):
         # Verificar los resultados
         self.assertTrue(result)
 
-    def test_document_exists_found(self):
+    def test_document_exists_found_by_text(self):
         # Variables de prueba
         content = "hay una historia sobre un perro con botas"
         # Llamar a la función a probar
@@ -31,6 +32,12 @@ class TestDocumentExistsReal(unittest.TestCase):
         self.assertTrue(len(result) > 0)
         for doc in result:
             print(doc)
+
+    def test_generate_answers_from_open_ai(self):
+        respuesta, texto = procesarConsulta("Quien es la mascota de mi hija",
+                                            "La mascota de mi hija es un gato de color blanco y plomo de nombre Mendez")
+        print(texto)
+        self.assertTrue(respuesta, texto)
 
 
 if __name__ == '__main__':
