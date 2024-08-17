@@ -6,6 +6,9 @@ WORKDIR /app
 
 # Copia el archivo requirements.txt al directorio de trabajo
 COPY requeriments.txt .
+COPY secret-key-document-ai-nlp.json .
+COPY secret-key-document-ai.json .
+COPY secret-key-open-ai.json .
 
 # Instala las dependencias
 RUN pip install --no-cache-dir -r requeriments.txt
